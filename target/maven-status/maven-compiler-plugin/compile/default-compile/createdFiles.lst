@@ -1,1 +1,8 @@
+DiskWork/DiskWork/config/SwaggerConfig.class
+DiskWork/DiskWork/controller/TreeController.class
+DiskWork/DiskWork/dto/TreeNodeDto.class
+DiskWork/DiskWork/model/RedBlackTree.class
 DiskWork/DiskWork/DiskWorkApplication.class
+DiskWork/DiskWork/service/TreeService.class
+DiskWork/DiskWork/model/TreeNode.class
+DiskWork/DiskWork/dto/TreeStatisticsDto.class

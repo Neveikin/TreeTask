@@ -15,7 +15,7 @@
 
 2. **Соберите проект локально**
    ```bash
-   ./mvnw clean package -DskipTests
+   mvn clean package -DskipTests
    ```
 
 3. **Развертывание на Railway**
@@ -24,6 +24,8 @@
    - Выберите ваш репозиторий
    - Railway автоматически определит Java проект и соберет его
    - После сборки получите URL вашего бэкенда (например: `https://your-app.up.railway.app`)
+   
+   **Важно**: Проект настроен на Java 21 для совместимости с Railway
 
 ### 2. Развертывание фронтенда на Vercel
 
@@ -63,7 +65,7 @@
 
 ```bash
 # Локальный запуск бэкенда
-./mvnw spring-boot:run
+mvn spring-boot:run
 
 # Локальный запуск фронтенда
 cd frontend
