@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red-Black Tree Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .controls input, .controls button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .controls button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .controls button:hover {
+            background: #0056b3;
+        }
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 14px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        #tree-container {
+            width: 100%;
+            height: 600px;
+            background: #fdfdfd;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .success {
+            color: #155724;
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .panel {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            color: #6a1b9a;
+        }
+        .info {
+            background: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .info-item {
+            font-size: 14px;
+        }
+        .info-item strong {
+            font-size: 20px;
+            margin-left: 8px;
+            color: #7b1fa2;
+        }
+        .chart-container {
+            margin: 20px 0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+        }
+        .levels {
+            margin: 20px 0;
+        }
+        .level-row {
+            margin-bottom: 10px;
+        }
+        .level-label {
+            font-size:13px;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .bar {
+            background: #e0e0e0;
+            height: 24px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            background: #9c27b0;
+            height: 100%;
+            transition: width 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 6px;
+            color: white;
+            font-size: 11px;
+        }
+        .buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 6px 14px;
+            background: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button:hover {
+            background: #7b1fa2;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 8px;
+            background: #f0f0f0;
+            font-size: 12px;
+            border-left: 3px solid #9c27b0;
+        }
+        .error {
+            background: #ffe0e0;
+            border-left-color: #cc0000;
+            color: #cc0000;
+        }
+        .clock {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Red-Black Tree Visualizer</h1>
+
+        <div class="error" id="error-message"></div>
+        <div class="success" id="success-message"></div>
+
+        <div class="controls">
+            <input type="number" id="value-input" placeholder="Введите значение" />
+            <button onclick="insertNode()">Вставить узел</button>
+            <button onclick="searchNode()">Найти узел</button>
+            <button onclick="clearTree()">Очистить дерево</button>
+            <button onclick="refreshTree()">Обновить дерево</button>
+        </div>
+
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>Высота дерева</h3>
+                <div class="stat-value" id="tree-height">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Красные узлы</h3>
+                <div class="stat-value" id="red-nodes">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Черные узлы</h3>
+                <div class="stat-value" id="black-nodes">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Всего узлов</h3>
+                <div class="stat-value" id="total-nodes">0</div>
+            </div>
+        </div>
+
+        <div id="tree-container"></div>
+    </div>
+
+    <div class="panel">
+        <h1>Статистика узлов в реальном времени</h1>
+        
+        <div class="info">
+            <div class="info-item">Всего узлов: <strong id="total">0</strong></div>
+            <div class="info-item">Красные узлы: <strong id="redCount">0</strong></div>
+            <div class="info-item">Черные узлы: <strong id="blackCount">0</strong></div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="levelChart" width="800" height="280" style="width:100%; height:auto; max-width:800px"></canvas>
+        </div>
+        
+        <div class="levels" id="levelsList"></div>
+        
+        <div class="buttons">
+            <button id="refreshBtn">Обновить</button>
+            <button id="autoToggle">Авто</button>
+        </div>
+        
+        <div class="status" id="status">
+            Статус: ожидание данных
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // API базовый URL
+        const API_BASE = 'http://localhost:8080/api/tree';
+        const API_URL = '/api/tree/statistics/nodes-by-level';
+        
+        // Глобальные переменные для графика
+        let chart = null;
+        let autoUpdate = true;
+        let intervalId = null;
+        let currentData = null;
+        
+        // DOM элементы для графика
+        const totalSpan = document.getElementById('total');
+        const redSpan = document.getElementById('redCount');
+        const blackSpan = document.getElementById('blackCount');
+        const levelsDiv = document.getElementById('levelsList');
+        const statusDiv = document.getElementById('status');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const autoToggleBtn = document.getElementById('autoToggle');
+
+        // Показать сообщение
+        function showMessage(message, type = 'success') {
+            const errorEl = document.getElementById('error-message');
+            const successEl = document.getElementById('success-message');
+
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (type === 'error') {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            } else {
+                successEl.textContent = message;
+                successEl.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+                successEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Вставить узел
+        async function insertNode() {
+            const value = document.getElementById('value-input').value;
+            if (!value) {
+                showMessage('Введите значение', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/insert?value=${value}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    showMessage(`Узел ${value} успешно вставлен`);
+                    document.getElementById('value-input').value = '';
+                    refreshTree();
+                    fetchStats(); // Обновляем график после вставки
+                } else {
+                    showMessage('Ошибка при вставке узла', 'error');
+                }
+            } catch (error) {
+                showMessage('Ошибка подключения к серверу', 'error');
+            }
+        }
+
+        // Найти узел
+        async function searchNode() {
+            const value = document.getElementById('value-input').value;
+            if (!value) {
+                showMessage('Введите значение для поиска', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/search?value=${value}`);
+                if (response.ok) {
+                    const node = await response.json();
+                    const depth = await getNodeDepth(value);
+                    showMessage(`Узел ${value} найден (глубина: ${depth})`);
+                    highlightNode(value);
+                } else {
+                    showMessage(`Узел ${value} не найден`, 'error');
+                }
+            } catch (error) {
+                showMessage('Ошибка подключения к серверу', 'error');
+            }
+        }
+
+        // Получить глубину узла
+        async function getNodeDepth(value) {
+            try {
+                const response = await fetch(`${API_BASE}/statistics/node-depth?value=${value}`);
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.error('Error getting node depth:', error);
+            }
+            return -1;
+        }
+
+        // Очистить дерево
+        async function clearTree() {
+            try {
+                const response = await fetch(`${API_BASE}/clear`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showMessage('Дерево очищено');
+                    refreshTree();
+                    fetchStats(); // Обновляем график после очистки
+                } else {
+                    showMessage('Ошибка при очистке дерева', 'error');
+                }
+            } catch (error) {
+                showMessage('Ошибка подключения к серверу', 'error');
+            }
+        }
+
+        // Обновить дерево и статистику
+        async function refreshTree() {
+            await Promise.all([loadTree(), loadStatistics()]);
+        }
+
+        // Загрузить дерево
+        async function loadTree() {
+            try {
+                console.log('Loading tree from:', `${API_BASE}/root`);
+                const response = await fetch(`${API_BASE}/root`);
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const root = await response.json();
+                    console.log('Tree data received:', root);
+                    drawTree(root);
+                } else {
+                    console.log('Tree is empty or error');
+                    drawTree(null);
+                }
+            } catch (error) {
+                console.error('Error loading tree:', error);
+                showMessage('Ошибка загрузки дерева', 'error');
+                drawTree(null);
+            }
+        }
+
+        // Загрузить статистику
+        async function loadStatistics() {
+            try {
+                // Высота дерева
+                const heightResponse = await fetch(`${API_BASE}/statistics/height`);
+                if (heightResponse.ok) {
+                    const height = await heightResponse.json();
+                    document.getElementById('tree-height').textContent = height;
+                }
+
+                // Соотношение красных/черных
+                const ratioResponse = await fetch(`${API_BASE}/statistics/red-black-ratio`);
+                if (ratioResponse.ok) {
+                    const ratio = await ratioResponse.json();
+                    document.getElementById('red-nodes').textContent = ratio.red || 0;
+                    document.getElementById('black-nodes').textContent = ratio.black || 0;
+                    document.getElementById('total-nodes').textContent = ratio.total || 0;
+                    
+                    // Обновляем данные для графика
+                    if (ratio.total > 0) {
+                        // Получаем распределение по уровням
+                        const levelsResponse = await fetch(`${API_BASE}/statistics/nodes-by-level`);
+                        if (levelsResponse.ok) {
+                            const levelsData = await levelsResponse.json();
+                            const levelNames = levelsData.map((_, index) => `Уровень ${index + 1}`);
+                            
+                            // Обновляем график с реальными данными
+                            updateChart(levelNames, levelsData);
+                            renderLevelsList(levelNames, levelsData);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Нарисовать дерево
+        function drawTree(root) {
+            console.log('Drawing tree with root:', root);
+            const container = d3.select("#tree-container");
+            container.selectAll("*").remove();
+
+            if (!root) {
+                container.append("div")
+                    .style("text-align", "center")
+                    .style("padding-top", "250px")
+                    .style("color", "#666")
+                    .text("Дерево пусто. Добавьте узлы для начала работы.");
+                return;
+            }
+
+            const width = 900;
+            const height = 500;
+            const margin = {top: 20, right: 120, bottom: 20, left: 120};
+
+            const svg = container.append("svg")
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .style("width", "100%")
+                .style("height", "100%")
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const tree = d3.tree()
+                .size([height - margin.top - margin.bottom, width - margin.left - margin.right]);
+
+            const rootHierarchy = d3.hierarchy(convertToD3Format(root));
+            tree(rootHierarchy);
+
+            console.log('Root hierarchy:', rootHierarchy);
+
+            // Рисуем связи
+            svg.selectAll(".link")
+                .data(rootHierarchy.links())
+                .join("path")
+                .attr("fill", "none")
+                .attr("stroke", "#d2d6de")
+                .attr("stroke-width", 2)
+                .attr("d", d3.linkHorizontal()
+                    .x(d => d.y)
+                    .y(d => d.x));
+
+            // Рисуем узлы
+            const node = svg.selectAll(".node")
+                .data(rootHierarchy.descendants())
+                .join("g")
+                .attr("transform", d => `translate(${d.y},${d.x})`)
+                .style("cursor", "pointer")
+                .on("click", (e, d) => {
+                    console.log('Node clicked:', d.data);
+                    showMessage(`Узел ${d.data.name} (глубина: ${d.data.depth})`);
+                });
+
+            node.append("circle")
+                .attr("r", 8)
+                .attr("fill", d => d.data.isRed ? "#ff6b6b" : "#333")
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2);
+
+            node.append("text")
+                .attr("dy", "0.31em")
+                .attr("x", d => d.children ? -12 : 12)
+                .attr("text-anchor", d => d.children ? "end" : "start")
+                .text(d => d.data.name)
+                .style("font-size", "14px")
+                .style("fill", "#333")
+                .style("font-family", "sans-serif");
+        }
+
+        // Конвертировать узел дерева в формат D3
+        function convertToD3Format(node, depth = 0) {
+            if (!node || !node.value) return null;
+
+            const result = {
+                name: node.value.toString(),
+                isRed: node.isRed,
+                depth: depth
+            };
+
+            if (node.left && node.left.value != null) {
+                result.children = result.children || [];
+                result.children.push(convertToD3Format(node.left, depth + 1));
+            }
+
+            if (node.right && node.right.value != null) {
+                result.children = result.children || [];
+                result.children.push(convertToD3Format(node.right, depth + 1));
+            }
+
+            return result;
+        }
+
+        // Подсветить узел (простая реализация)
+        function highlightNode(value) {
+            refreshTree();
+        }
+
+        // Формат времени
+        function updateClock() {
+            const now = new Date();
+            clockSpan.textContent = now.toLocaleTimeString('ru-RU');
+        }
+
+        // Запрос к API для графика
+        async function fetchStats() {
+            try {
+                statusDiv.textContent = 'Статус: загрузка...';
+                const response = await fetch(`http://localhost:8080${API_URL}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                currentData = data;
+                renderUI(data);
+                statusDiv.textContent = 'Статус: OK, данные получены';
+                statusDiv.classList.remove('error');
+            } catch (err) {
+                console.error('Ошибка API:', err);
+                statusDiv.textContent = 'Статус: ошибка подключения к API, используются демо-данные';
+                statusDiv.classList.add('error');
+                
+                // Демо-данные для тестирования
+                const demoData = generateDemoData();
+                currentData = demoData;
+                renderUI(demoData);
+            }
+        }
+
+        // Генерация демо-данных (если API недоступен)
+        function generateDemoData() {
+            const levels = ['Уровень 1', 'Уровень 2', 'Уровень 3', 'Уровень 4', 'Уровень 5'];
+            const nodes = [12, 8, 15, 6, 4];
+            const total = nodes.reduce((a, b) => a + b, 0);
+            
+            return {
+                levels: levels,
+                nodesByLevel: nodes,
+                totalNodes: total,
+                redNodes: Math.floor(total * 0.3),
+                blackNodes: total - Math.floor(total * 0.3)
+            };
+        }
+
+        // Отображение данных для графика
+        function renderUI(data) {
+            if (!data) return;
+            
+            // Общая статистика
+            totalSpan.textContent = data.totalNodes || 0;
+            redSpan.textContent = data.redNodes || 0;
+            blackSpan.textContent = data.blackNodes || 0;
+            
+            // Получаем уровни и значения
+            let levelNames = data.levels || [];
+            let levelValues = data.nodesByLevel || [];
+            
+            // Если данных нет, показываем пустое состояние
+            if (levelNames.length === 0) {
+                levelNames = ['Нет данных'];
+                levelValues = [0];
+            }
+            
+            // Обновляем график
+            updateChart(levelNames, levelValues);
+            
+            // Обновляем список с полосками
+            renderLevelsList(levelNames, levelValues);
+        }
+
+        // График
+        function updateChart(labels, values) {
+            const ctx = document.getElementById('levelChart').getContext('2d');
+            
+            if (chart) {
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = values;
+                chart.update();
+            } else {
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Количество узлов',
+                            data: values,
+                            backgroundColor: '#9c27b0',
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { label: (ctx) => `${ctx.raw} узлов` } }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 5 } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Список уровней с полосками
+        function renderLevelsList(labels, values) {
+            if (!labels.length) return;
+            
+            const total = values.reduce((a, b) => a + b, 0);
+            let html = '';
+            
+            for (let i = 0; i < labels.length; i++) {
+                const count = values[i];
+                const percent = total > 0 ? (count / total * 100) : 0;
+                
+                html += `
+                <div class="level-row">
+                    <div class="level-label">
+                        <span>${labels[i]}</span>
+                        <span>${count}</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width: ${percent}%">${percent > 15 ? Math.round(percent) + '%' : ''}</div>
+                    </div>
+                </div>
+            `;
+            }
+            
+            levelsDiv.innerHTML = html;
+        }
+
+        // Обновление вручную
+        async function manualRefresh() {
+            await fetchStats();
+        }
+
+        // Автообновление
+        function startAutoUpdate() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                if (autoUpdate) {
+                    fetchStats();
+                }
+            }, 3000);
+        }
+
+        function stopAutoUpdate() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        function toggleAuto() {
+            autoUpdate = !autoUpdate;
+            if (autoUpdate) {
+                startAutoUpdate();
+                autoToggleBtn.textContent = 'Авто';
+                statusDiv.textContent = 'Статус: автообновление включено';
+                statusDiv.classList.remove('error');
+            } else {
+                stopAutoUpdate();
+                autoToggleBtn.textContent = 'Запуск';
+                statusDiv.textContent = 'Статус: автообновление остановлено';
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshTree();
+            updateClock();
+            setInterval(updateClock, 1000);
+            fetchStats();
+            startAutoUpdate();
+            
+            refreshBtn.onclick = manualRefresh;
+            autoToggleBtn.onclick = toggleAuto;
+            
+            // Обработка Enter в поле ввода
+            document.getElementById('value-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    insertNode();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

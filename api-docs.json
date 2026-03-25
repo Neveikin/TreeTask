@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Error</title>
+    <meta property="og:title" content="Error" />
+    <meta property="og:type" content="object" />
+    <meta property="og:url" content="http://localhost:8080/v3/api-docs" />
+    
+      <meta property="og:image" content="http://localhost:8080/assets/common/images/gitbucket_ogp.png" />
+    
+    
+    <link rel="icon" href="/assets/common/images/gitbucket.png?20260325220045" type="image/vnd.microsoft.icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/vendors/google-fonts/css/source-sans-pro.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/bootstrap-3.4.1/css/bootstrap.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/octicons-4.4.0/octicons.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/bootstrap-datetimepicker-4.17.44/css/bootstrap-datetimepicker.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/colorpicker/css/bootstrap-colorpicker.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/color-themes-for-google-code-prettify/github-v2.min.css?20260325220045" type="text/css" rel="stylesheet"/>
+    <link href="/assets/vendors/facebox/facebox.css?20260325220045" rel="stylesheet"/>
+    <link href="/assets/vendors/AdminLTE-2.4.2/css/AdminLTE.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/AdminLTE-2.4.2/css/skins/skin-blue.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/font-awesome-4.7.0/css/font-awesome.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/jquery-ui/jquery-ui.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/jquery-ui/jquery-ui.structure.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/jquery-ui/jquery-ui.theme.min.css?20260325220045" rel="stylesheet">
+    <link href="/assets/common/css/gitbucket.css?20260325220045" rel="stylesheet">
+    <link href="/assets/vendors/tipped/tipped.css?20260325220045" rel="stylesheet">
+    <script src="/assets/vendors/jquery/jquery-3.5.1.min.js?20260325220045"></script>
+    <script src="/assets/vendors/jquery-ui/jquery-ui.min.js?20260325220045"></script>
+    <script src="/assets/vendors/dropzone/dropzone.min.js?20260325220045"></script>
+    <script src="/assets/common/js/validation.js?20260325220045"></script>
+    <script src="/assets/common/js/gitbucket.js?20260325220045"></script>
+    <script src="/assets/vendors/bootstrap-3.4.1/js/bootstrap.min.js?20260325220045"></script>
+    <script src="/assets/vendors/bootstrap3-typeahead/bootstrap3-typeahead.min.js?20260325220045"></script>
+    <script src="/assets/vendors/bootstrap-datetimepicker-4.17.44/js/moment.min.js?20260325220045"></script>
+    <script src="/assets/vendors/bootstrap-datetimepicker-4.17.44/js/bootstrap-datetimepicker.min.js?20260325220045"></script>
+    <script src="/assets/vendors/colorpicker/js/bootstrap-colorpicker.min.js?20260325220045"></script>
+    <script src="/assets/vendors/google-code-prettify/prettify.js?20260325220045"></script>
+    <script src="/assets/vendors/elastic/jquery.elastic.source.js?20260325220045"></script>
+    <script src="/assets/vendors/facebox/facebox.js?20260325220045"></script>
+    <script src="/assets/vendors/jquery-hotkeys/jquery.hotkeys.js?20260325220045"></script>
+    <script src="/assets/vendors/jquery-textcomplete-1.8.4/jquery.textcomplete.min.js?20260325220045"></script>
+    <script src="/assets/vendors/tipped/tipped.min.js?20260325220045"></script>
+    
+    <script src="/assets/vendors/AdminLTE-2.4.2/js/adminlte.min.js?20260325220045" type="text/javascript"></script>
+    
+  </head>
+  <body class="skin-blue page-load  ">
+    <div class="wrapper">
+      <header class="main-header">
+        <a href="/" class="logo">
+          <span class="logo-mini"><img src="/assets/common/images/gitbucket.svg?20260325220045" alt="GitBucket" /></span>
+          <span class="logo-lg">
+            <img src="/assets/common/images/gitbucket.svg?20260325220045" alt="GitBucket" />
+            <span class="header-title strong">GitBucket</span>
+          </span>
+        </a>
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          
+          
+            <form id="search" action="/search" method="GET" class="pc navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" name="query" id="navbar-search-input" class="form-control" placeholder="Find a repository" aria-label="Search"/>
+              </div>
+            </form>
+            <ul class="pc nav navbar-nav">
+              <li><a href="/dashboard/pulls">Pull requests</a></li>
+              <li><a href="/dashboard/issues">Issues</a></li>
+              
+                
+                  <li><a href="/gist">Snippets</a></li>
+                
+              
+            </ul>
+          
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              
+                <li>
+                  <a href="/signin?redirect=%2Fv3%2Fapi-docs" class="pull-right" id="signin">Sign in</a>
+                </li>
+              
+            </ul>
+          </div>
+        </nav>
+      </header>
+      
+  <div class="content-wrapper main-center">
+    <div class="content body">
+      <h1>Not Found</h1>
+      
+        <div>Please contact your administrator.</div>
+      
+    </div>
+  </div>
+
+    </div>
+    <script>
+      $(function(){
+        
+        
+      });
+    </script>
+    
+  </body>
+</html>
+
