@@ -255,7 +255,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
         // API базовый URL
-        const API_BASE = 'http://localhost:8080/api/tree';
+        const API_BASE = process.env.API_URL || 'http://localhost:8080/api/tree';
         const API_URL = '/api/tree/statistics/nodes-by-level';
         
         // Глобальные переменные для графика

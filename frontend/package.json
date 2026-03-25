@@ -1,0 +1,10 @@
+{
+  "name": "red-black-tree-frontend",
+  "version": "1.0.0",
+  "description": "Red-Black Tree Visualizer Frontend",
+  "scripts": {
+    "build": "echo 'Build complete'",
+    "start": "python3 -m http.server 3000"
+  },
+  "dependencies": {}
+}
